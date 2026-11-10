@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApplyTrack — Job Application Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">A</span><span>ApplyTrack</span></div>
+      <p class="side-label">WORKSPACE</p>
+      <button class="nav-item active" id="navDashboard"><span>▦</span> Dashboard</button>
+      <button class="nav-item" id="navApplications"><span>▤</span> Applications</button>
+      <div class="sidebar-tip">
+        <div class="tip-icon">✦</div>
+        <strong>One step at a time.</strong>
+        <p>Keep every application organized and focus on your next opportunity.</p>
+      </div>
+      <div class="sidebar-footer">Your career, in progress.</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">YOUR CAREER WORKSPACE</p>
+          <h1 id="pageTitle">Dashboard</h1>
+        </div>
+        <button class="primary-btn" id="addApplicationBtn">＋ Add application</button>
+      </header>
+
+      <section class="welcome-panel">
+        <div>
+          <p class="welcome-kicker">KEEP MOVING FORWARD</p>
+          <h2>Your next opportunity starts here.</h2>
+          <p>Track applications, prepare for interviews, and never miss a follow-up.</p>
+        </div>
+        <div class="welcome-art" aria-hidden="true"><span>✦</span><div class="art-card">NEXT<br><b>CHAPTER</b><i>↗</i></div></div>
+      </section>
+
+      <section class="stats-grid" aria-label="Application statistics">
+        <article class="stat-card"><div class="stat-top"><span>Total applications</span><span class="stat-icon lilac">▤</span></div><strong id="totalCount">0</strong><small>All roles you're tracking</small></article>
+        <article class="stat-card"><div class="stat-top"><span>In progress</span><span class="stat-icon blue">◷</span></div><strong id="progressCount">0</strong><small>Applied, assessment or interview</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Interviews</span><span class="stat-icon peach">▣</span></div><strong id="interviewCount">0</strong><small>Interview stage or scheduled</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Offers</span><span class="stat-icon green">✧</span></div><strong id="offerCount">0</strong><small>Offers received</small></article>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel applications-panel" id="applicationsSection">
+          <div class="panel-heading">
+            <div><h2>Recent applications</h2><p>Your latest job opportunities</p></div>
+            <button class="text-btn" id="viewAllBtn">View all →</button>
+          </div>
+          <div class="toolbar">
+            <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search company or role…"></label>
+            <select id="statusFilter" aria-label="Filter by status">
+              <option value="All">All statuses</option><option>Applied</option><option>Assessment</option><option>Interview</option><option>Offer</option><option>Rejected</option><option>Withdrawn</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>COMPANY / ROLE</th><th>APPLIED</th><th>STATUS</th><th></th></tr></thead>
+              <tbody id="applicationsTable"><tr><td colspan="4" class="empty-state">Loading applications…</td></tr></tbody>
+            </table>
+          </div>
+          <p class="table-foot" id="tableFoot">Showing 0 applications</p>
+        </div>
+
+        <aside class="panel reminders-panel">
+          <div class="panel-heading"><div><h2>Coming up</h2><p>Interviews & follow-ups</p></div><span class="calendar-icon">▦</span></div>
+          <div id="remindersList" class="reminders-list"><p class="muted">Loading reminders…</p></div>
+          <div class="reminder-note"><span>✦</span><p><strong>Little reminder</strong><br>Following up politely can help keep your application on the radar.</p></div>
+        </aside>
+      </section>
+      <p class="footer-note">Made for your next chapter <span>✦</span></p>
+    </main>
+  </div>
+
+  <dialog id="applicationDialog">
+    <form id="applicationForm">
+      <div class="dialog-heading"><div><p class="eyebrow">JOB DETAILS</p><h2 id="dialogTitle">Add application</h2></div><button type="button" class="close-btn" id="closeDialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="applicationId">
+      <div class="form-grid">
+        <label>Company name *<input id="company" required maxlength="100" placeholder="e.g. Microsoft"></label>
+        <label>Job title *<input id="jobTitle" required maxlength="120" placeholder="e.g. Software Engineer Intern"></label>
+        <label>Location<input id="location" placeholder="e.g. Bengaluru / Remote"></label>
+        <label>Job link<input id="jobLink" type="url" placeholder="https://..."></label>
+        <label>Salary / package<input id="salary" placeholder="e.g. ₹8 LPA or ₹30,000/month"></label>
+        <label>Status<select id="status"><option>Applied</option><option>Assessment</option><option>Interview</option><option>Offer</option><option>Rejected</option><option>Withdrawn</option></select></label>
+        <label>Application date<input id="appliedDate" type="date"></label>
+        <label>Interview date<input id="interviewDate" type="date"></label>
+        <label>Follow-up date<input id="followUpDate" type="date"></label>
+        <label class="full-width">Notes<textarea id="notes" rows="3" placeholder="Recruiter name, interview prep, next steps…"></textarea></label>
+      </div>
+      <div class="resume-row"><div><strong>Resume file</strong><p id="resumeStatus">Save the application before attaching a resume.</p></div><label class="upload-btn">Choose PDF/DOC/DOCX<input id="resumeFile" type="file" accept=".pdf,.doc,.docx" hidden></label></div>
+      <p class="form-message" id="formMessage" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" id="cancelDialog">Cancel</button><button type="submit" class="primary-btn" id="saveBtn">Save application</button></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
